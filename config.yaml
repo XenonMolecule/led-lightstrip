@@ -1,0 +1,9 @@
+neopixel:
+ led-count: 150
+ led-pin: 18
+ led-freq-hz: 800000
+ led-dma: 10
+ led-brightness: 255
+ led-invert: False
+ led-channel: 0
+
