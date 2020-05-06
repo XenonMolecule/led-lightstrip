@@ -58,3 +58,6 @@ class Lightstrip(object):
 		for i in range(self.strip.numPixels()):
 			self.setPixel(i, Color(0,0,0))
 		self.show()
+		
+	def clearPixel(self, n):
+		self.setPixel(n, Color(0, 0, 0))

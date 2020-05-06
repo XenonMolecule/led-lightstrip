@@ -9,6 +9,7 @@ import yaml
 from lightstrip import Lightstrip
 from colors import *
 from patterns.colorwipe import ColorWipe
+from patterns.theaterchase import TheaterChase
 
 cfg = {}
 
@@ -19,12 +20,15 @@ with open("config.yaml", "r") as yamlfile:
 if __name__ == '__main__':
 	# Create NeoPixel object with appropriate configuration
 	strip = Lightstrip(cfg)
-	red_wipe = ColorWipe(strip, red, 20)
-	clr_wipe = ColorWipe(strip, clear, 20)
+	sequence = []
+	sequence.append(ColorWipe(strip, red, 20))
+	sequence.append(TheaterChase(strip, red, 50))
+	sequence.append(TheaterChase(strip, green, 50))
+	sequence.append(TheaterChase(strip, blue, 50))
 	
 	try:
 		while True:
-			red_wipe.execute()
-			clr_wipe.execute()
+			for pattern in sequence:
+				pattern.execute()
 	except KeyboardInterrupt:
 		strip.clear()
