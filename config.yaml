@@ -7,3 +7,5 @@ neopixel:
  led-invert: False
  led-channel: 0
 
+custom:
+ reversed: False
