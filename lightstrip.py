@@ -1,12 +1,5 @@
 from neopixel import Adafruit_NeoPixel
-
-# Converts RGB to GRB which is needed by the lightstrip
-def Color(red, green, blue, white = 0):
-	"""Convert the provided red, green, blue color to a 24-bit color value.
-	Each color component should be a value 0-255 where 0 is the lowest intensity
-	and 255 is the highest intensity.
-	"""
-	return (white << 24) | (green << 16)| (red << 8) | blue
+from colors import Color
 
 # Creates an "interface" (not using programming definition) between
 # my code and the neopixel library to set each of the pixels
