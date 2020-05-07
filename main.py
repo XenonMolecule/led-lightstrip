@@ -10,6 +10,7 @@ from lightstrip import Lightstrip
 from colors import *
 from patterns.colorwipe import ColorWipe
 from patterns.theaterchase import TheaterChase
+from patterns.colorslide import ColorSlide
 
 cfg = {}
 
@@ -21,10 +22,9 @@ if __name__ == '__main__':
 	# Create NeoPixel object with appropriate configuration
 	strip = Lightstrip(cfg)
 	sequence = []
-	sequence.append(ColorWipe(strip, red, 20))
-	sequence.append(TheaterChase(strip, red, 50))
-	sequence.append(TheaterChase(strip, green, 50))
+	sequence.append(ColorWipe(strip, rainbow_cycle(strip.numPixels()), 20))
 	sequence.append(TheaterChase(strip, blue, 50))
+	sequence.append(ColorSlide(strip, rainbow_cycle(strip.numPixels()), 5, 5))
 	
 	try:
 		while True:

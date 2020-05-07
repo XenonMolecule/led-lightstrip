@@ -17,3 +17,22 @@ def blue(n):
 	
 def clear(n):
 	return Color(0, 0, 0)
+
+def rainbow(n):
+	n = n & 255
+	n = 255 - n
+	if n < 85:
+		return Color(255 - n * 3, 0, n * 3)
+		
+	elif n < 170:
+		n -= 85
+		return Color(0, n * 3, 255 - n * 3)
+	else:
+		n -= 170
+		return Color(n * 3, 255 - n * 3, 0)
+		
+
+def rainbow_cycle(length):
+	def rainbowCycleFunc(n):
+			return rainbow(n * 256 // length)
+	return rainbowCycleFunc
