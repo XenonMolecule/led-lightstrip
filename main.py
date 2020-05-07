@@ -11,6 +11,7 @@ from colors import *
 from patterns.colorwipe import ColorWipe
 from patterns.theaterchase import TheaterChase
 from patterns.colorslide import ColorSlide
+from patterns.timer import Timer
 
 cfg = {}
 
@@ -25,6 +26,8 @@ if __name__ == '__main__':
 	sequence.append(ColorWipe(strip, rainbow_cycle(strip.numPixels()), 20))
 	sequence.append(TheaterChase(strip, blue, 50))
 	sequence.append(ColorSlide(strip, rainbow_cycle(strip.numPixels()), 5, 5))
+	sequence.append(ColorWipe(strip, red, 20))
+	sequence.append(Timer(strip, red, 10000))
 	
 	try:
 		while True:
