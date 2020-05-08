@@ -14,6 +14,7 @@ from patterns.theaterchase import TheaterChase
 from patterns.colorslide import ColorSlide
 from patterns.timer import Timer
 from iterable_patterns.icolorwipe import IColorWipe
+from iterable_patterns.itheaterchase import ITheaterChase
 
 cfg = {}
 
@@ -31,14 +32,14 @@ if __name__ == '__main__':
 	sequence.append(ColorWipe(strip, red, 20))
 	sequence.append(Timer(strip, red, 10000))
 	
-	wipe = IColorWipe(strip, rainbow_cycle(strip.numPixels()))
+	chase = ITheaterChase(strip, rainbow_cycle(strip.numPixels()))
 	
 	try:
 		while True:
-			while not wipe.isDone():
-				wipe.runStep()
-				time.sleep(20/1000.0)
-			wipe.reset()
+			while not chase.isDone():
+				chase.runStep()
+				time.sleep(50/1000.0)
+			chase.reset()
 			strip.clear()
 			time.sleep(1)
 	except KeyboardInterrupt:
