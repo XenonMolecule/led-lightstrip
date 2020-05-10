@@ -36,3 +36,9 @@ def rainbow_cycle(length):
 	def rainbowCycleFunc(n):
 			return rainbow(n * 256 // length)
 	return rainbowCycleFunc
+
+def online(connection):
+	def onlineSetColor(n):
+		color = connection.getColor()
+		return Color(color['red'], color['green'], color['blue'])
+	return onlineSetColor
