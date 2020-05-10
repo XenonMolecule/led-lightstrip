@@ -13,23 +13,18 @@ from colors import *
 from onlineconn import OnlineConn
 from iterable_patterns.icolorslide import IColorSlide
 
-def control_lights(onlineSettings, onlineLock, soloThreadLock):
-	print(soloThreadLock.locked())
-	if(soloThreadLock.locked()):
-		return
-	else:
-		soloThreadLock.acquire()
-	
-	cfg = {}
+cfg = {}
 
-	# Load settings
-	with open("../../config.yaml", "r") as yamlfile:
-		cfg = yaml.safe_load(yamlfile)
+# Load settings
+with open("../config.yaml", "r") as yamlfile:
+	cfg = yaml.safe_load(yamlfile)
+	
+if __name__ == '__main__':
 	
 	# Create NeoPixel object with appropriate configuration
 	strip = Lightstrip(cfg)
 	
-	conn = OnlineConn(onlineSettings, onlineLock)
+	conn = OnlineConn()
 	
 	slide = IColorSlide(strip, online(conn))
 	
@@ -43,11 +38,3 @@ def control_lights(onlineSettings, onlineLock, soloThreadLock):
 			time.sleep(1)
 	except KeyboardInterrupt:
 		strip.clear()
-
-if __name__ == '__main__':
-	defaultSettings = {
-		'red': 255,
-		'green': 0,
-		'blue': 0
-	}
-	control_lights(defaultSettings, Lock(), Lock())

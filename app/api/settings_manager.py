@@ -6,21 +6,19 @@ settings = {
 	'green':0,
 	'blue': 255
 }
-readLock = Lock()
 
 lock = Lock()
 
-def get_settings():
-	with lock:
-		return settings
+def get_setting(setting):
+	return settings[setting]
 		
-def get_read_lock():
+def set_setting(setting, value):
 	with lock:
-		return readLock
+		settings[setting] = value
 		
 manager = BaseManager(('', 37844), b'password')
-manager.register('get_settings', get_settings)
-manager.register('get_read_lock', get_read_lock)
+manager.register('get_setting', get_setting)
+manager.register('set_setting', set_setting)
 server = manager.get_server()
 server.serve_forever()
 
