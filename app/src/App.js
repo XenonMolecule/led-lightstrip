@@ -24,7 +24,7 @@ function App() {
           <ChromePicker disableAlpha={true}
                   color = {color}
                   onChange={(color) => {
-              socket.emit('setcolor', {red: color.red, green: color.green, blue: color.blue});
+              socket.emit('setcolor', {red: color.rgb.r, green: color.rgb.g, blue: color.rgb.b});
               setColor(color);
           }}/>
       </Container>
