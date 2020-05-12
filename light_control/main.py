@@ -33,8 +33,6 @@ def run_lights(settings, read_lock):
 				slide.runStep()
 				time.sleep(20/1000.0)
 			slide.reset()
-			strip.clear()
-			time.sleep(1)
 	except KeyboardInterrupt:
 		strip.clear()
 
