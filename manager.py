@@ -14,7 +14,7 @@ class Settings(Structure):
 	]
 
 if __name__ == "__main__":
-	settings = Value(Settings, 255, 0, 0)
+	settings = Value(Settings, 0, 0, 0)
 	read_lock = multiprocessing.Lock()
 	
 	server = Process(target=run_server, args=(settings, read_lock))
