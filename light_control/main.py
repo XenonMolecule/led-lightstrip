@@ -28,7 +28,7 @@ def run_lights(settings, read_lock):
 	
 	conn = OnlineConn(settings, read_lock)
 	
-	slide = IColorSlide(strip, online(conn))
+	slide = IColorSlide(strip, rainbow_cycle(strip.numPixels()))
 	
 	redwipe = ColorWipe(strip, red, 20)
 	bluewipe = ColorWipe(strip, blue, 20)
@@ -37,12 +37,10 @@ def run_lights(settings, read_lock):
 	
 	try:
 		while True:
-			# while not slide.isDone():
-			#	 slide.runStep()
-			#	 time.sleep(20/1000.0)
-			# slide.reset()
-			loop.execute()
-			time.sleep(1)
+			while not slide.isDone():
+				slide.runStep()
+				slide.pause()
+			slide.reset()
 	except KeyboardInterrupt:
 		strip.clear()
 
