@@ -7,24 +7,23 @@
 
 import yaml
 import time
-from threading import Lock
+import multiprocessing
 from lightstrip import Lightstrip
 from colors import *
 from onlineconn import OnlineConn
 from iterable_patterns.icolorslide import IColorSlide
-
-cfg = {}
-
-# Load settings
-with open("../config.yaml", "r") as yamlfile:
-	cfg = yaml.safe_load(yamlfile)
 	
-if __name__ == '__main__':
+def run_lights(settings, read_lock):
+	cfg = {}
+
+	# Load settings
+	with open("../config.yaml", "r") as yamlfile:
+		cfg = yaml.safe_load(yamlfile)
 	
 	# Create NeoPixel object with appropriate configuration
 	strip = Lightstrip(cfg)
 	
-	conn = OnlineConn()
+	conn = OnlineConn(settings, read_lock)
 	
 	slide = IColorSlide(strip, online(conn))
 	
@@ -38,3 +37,10 @@ if __name__ == '__main__':
 			time.sleep(1)
 	except KeyboardInterrupt:
 		strip.clear()
+
+if __name__ == '__main__':
+	settings = multiprocessing.Manager().Namespace()
+	settings.red = 0
+	settings.green = 0
+	settings.blue = 255
+	run_lights(settings, multiprocessing.Lock())
