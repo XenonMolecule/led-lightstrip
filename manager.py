@@ -2,22 +2,23 @@ import multiprocessing
 from light_control.main import run_lights
 from app.api.api import run_server
 
-def init_settings(settings, lock):
-	with lock:
-		settings.red = 255
-		settings.green = 0
-		settings.blue = 0
+from multiprocessing import Process
+from multiprocessing.sharedctypes import Value
+from ctypes import Structure, c_int
+
+class Settings(Structure):
+	_fields_ = [
+		('red', c_int),
+		('green', c_int),
+		('blue', c_int)
+	]
 
 if __name__ == "__main__":
-	print("TEST")
-	mgr = multiprocessing.Manager()
-	settings = mgr.Namespace()
+	settings = Value(Settings, 255, 0, 0)
 	read_lock = multiprocessing.Lock()
 	
-	init_settings(settings, read_lock)
-	
-	server = multiprocessing.Process(target=run_server, args=(settings, read_lock))
-	lights = multiprocessing.Process(target=run_lights, args=(settings, read_lock))
+	server = Process(target=run_server, args=(settings, read_lock))
+	lights = Process(target=run_lights, args=(settings, read_lock))
 	
 	server.start()
 	lights.start()

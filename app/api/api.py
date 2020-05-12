@@ -5,10 +5,8 @@ from flask import Flask
 from flask import request
 
 app = Flask('api')
-# manager = BaseManager(('', 37844), b'password')
-# manager.register('get_setting')
-# manager.register('set_setting')
-# manager.connect()
+settings = None
+lock = None
 
 @app.route('/time')
 def get_current_time():
@@ -17,12 +15,17 @@ def get_current_time():
 @app.route('/setcolor', methods=['POST'])
 def set_color():
     color = request.get_json()
-    # manager.set_setting('red', color['red'])
-    # manager.set_setting('green', color['green'])
-    # manager.set_setting('blue', color['blue'])
+    with lock:
+        settings.red = color['red']
+        settings.green = color['green']
+        settings.blue = color['blue']
     return json.dumps({'success': 'success'})
 
-def run_server(settings, read_lock):
+def run_server(settings_link, read_lock):
+    global settings
+    global lock
+    settings = settings_link
+    lock = read_lock
     app.run(host='127.0.0.1', port='5000', debug=True, use_reloader=False)
 
 if __name__ == "__main__":
