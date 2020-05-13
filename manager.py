@@ -6,11 +6,14 @@ from multiprocessing import Process
 from multiprocessing.sharedctypes import Value, Array
 from ctypes import Structure, c_int
 
-import tkinter as tk
-from tkinter import *
-
 # TODO: stop being lazy and just read the config file here too
-EMULATOR = True
+EMULATOR = False
+
+if EMULATOR:
+	import tkinter as tk
+	from tkinter import *
+
+
 
 def hex_from_int(color):
 	red = 0b11111111 & (color >> 8)

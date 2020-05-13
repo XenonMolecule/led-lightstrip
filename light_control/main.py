@@ -8,8 +8,8 @@
 import yaml
 import time
 import multiprocessing
-#from lightstrip import Lightstrip
-from elightstrip import EmulatedLightstrip
+from lightstrip import Lightstrip
+# from elightstrip import EmulatedLightstrip
 from colors import *
 from onlineconn import OnlineConn
 from iterable_patterns.icolorslide import IColorSlide
