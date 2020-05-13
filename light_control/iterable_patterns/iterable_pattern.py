@@ -11,7 +11,16 @@ class IterablePattern(object):
 	
 	def setColorFunc(self, colorFunc):
 		self.color = colorFunc
-	
+		
+	def setTotalSteps(self, totalSteps):
+		self.totalSteps = totalSteps
+		
+	def getTotalSteps(self):
+		return self.totalSteps
+		
+	def setStep(self, step):
+		self.step = step
+		
 	def getStep(self):
 		return self.step
 		

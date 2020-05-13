@@ -12,6 +12,8 @@ from lightstrip import Lightstrip
 from colors import *
 from onlineconn import OnlineConn
 from iterable_patterns.icolorslide import IColorSlide
+from iterable_patterns.icolorwipe import IColorWipe
+from iterable_patterns.imacro import IMacro
 from patterns.colorwipe import ColorWipe
 from patterns.macro import Macro
 from patterns.loop import Loop
@@ -29,6 +31,14 @@ def run_lights(settings, read_lock):
 	conn = OnlineConn(settings, read_lock)
 	
 	slide = IColorSlide(strip, rainbow_cycle(strip.numPixels()))
+	rwipe = IColorWipe(strip, red)
+	bwipe = IColorWipe(strip, blue)
+	imacro = IMacro()
+	
+	imacro.append(slide)
+	imacro.insert(0, rwipe)
+	imacro.append(bwipe)
+	imacro.pop(1)
 	
 	redwipe = ColorWipe(strip, red, 20)
 	bluewipe = ColorWipe(strip, blue, 20)
@@ -37,10 +47,10 @@ def run_lights(settings, read_lock):
 	
 	try:
 		while True:
-			while not slide.isDone():
-				slide.runStep()
-				slide.pause()
-			slide.reset()
+			while not imacro.isDone():
+				imacro.runStep()
+				imacro.pause()
+			imacro.reset()
 	except KeyboardInterrupt:
 		strip.clear()
 
