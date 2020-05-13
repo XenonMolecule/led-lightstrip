@@ -14,6 +14,7 @@ from onlineconn import OnlineConn
 from iterable_patterns.icolorslide import IColorSlide
 from iterable_patterns.icolorwipe import IColorWipe
 from iterable_patterns.imacro import IMacro
+from iterable_patterns.iloop import ILoop
 from patterns.colorwipe import ColorWipe
 from patterns.macro import Macro
 from patterns.loop import Loop
@@ -33,12 +34,8 @@ def run_lights(settings, read_lock):
 	slide = IColorSlide(strip, rainbow_cycle(strip.numPixels()))
 	rwipe = IColorWipe(strip, red)
 	bwipe = IColorWipe(strip, blue)
-	imacro = IMacro()
-	
-	imacro.append(slide)
-	imacro.insert(0, rwipe)
-	imacro.append(bwipe)
-	imacro.pop(1)
+	iloop = ILoop(rwipe, 2)
+	imacro = IMacro(slide, iloop, bwipe)
 	
 	redwipe = ColorWipe(strip, red, 20)
 	bluewipe = ColorWipe(strip, blue, 20)

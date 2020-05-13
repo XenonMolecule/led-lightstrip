@@ -5,7 +5,6 @@ class ITheaterChase(IterablePattern):
 	def __init__(self, strip, colorFunc, delay = 50, iterations = 10):
 		super(ITheaterChase, self).__init__(strip, colorFunc, 3 * iterations, delay)
 		
-		
 	def runStep(self):
 		for i in range(self.strip.numPixels()):
 			if ((i - self.step) % 3) == 0:
