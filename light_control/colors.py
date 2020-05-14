@@ -22,6 +22,23 @@ def color(r, g, b):
 	def colorFunc(n):
 		return Color(r, g, b)
 	return colorFunc
+	
+def gradient(r1, g1, b1, r2, g2, b2):
+	dr = (r2 - r1) / 128.0
+	dg = (g2 - g1) / 128.0
+	db = (b2 - b1) / 128.0
+	def gradientFunc(n):
+		n += 128
+		n = n & 255
+		n = abs(128 - n)
+		return Color(r1 + int(round(dr * n)), g1 + int(round(dg * n)), b1 + int(round(db * n)))
+	return gradientFunc
+	
+def gradient_cycle(r1, g1, b1, r2, g2, b2, length):
+	default_gradient = gradient(r1, g1, b1, r2, g2, b2)
+	def gradCycleFunc(n):
+		return default_gradient(n * 256 // length)
+	return gradCycleFunc
 
 def rainbow(n):
 	n = n & 255
