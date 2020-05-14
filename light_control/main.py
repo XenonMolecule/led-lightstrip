@@ -12,7 +12,7 @@ from light_control.lightstrip import Lightstrip
 # from elightstrip import EmulatedLightstrip
 from light_control.colors import *
 from light_control.onlineconn import OnlineConn
-from light_control.iterable_patterns.icolorslide import IColorSlide
+from light_control.iterable_patterns.icolorwipe import IColorWipe
 
 def run_lights(settings, read_lock, estrip):
 	cfg = {}
@@ -30,14 +30,14 @@ def run_lights(settings, read_lock, estrip):
 
 	conn = OnlineConn(settings, read_lock)
 
-	slide = IColorSlide(strip, online(conn))
+	wipe = IColorWipe(strip, color(255, 0, 255))
 
 	try:
 		while True:
-			while not slide.isDone():
-				slide.runStep()
-				slide.pause()
-			slide.reset()
+			while not wipe.isDone():
+				wipe.runStep()
+				wipe.pause()
+			wipe.reset()
 	except KeyboardInterrupt:
 		strip.clear()
 

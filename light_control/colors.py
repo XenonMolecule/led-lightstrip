@@ -17,6 +17,11 @@ def blue(n):
 	
 def clear(n):
 	return Color(0, 0, 0)
+	
+def color(r, g, b):
+	def colorFunc(n):
+		return Color(r, g, b)
+	return colorFunc
 
 def rainbow(n):
 	n = n & 255
