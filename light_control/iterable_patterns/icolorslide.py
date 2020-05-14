@@ -1,4 +1,4 @@
-from iterable_pattern import IterablePattern
+from light_control.iterable_patterns.iterable_pattern import IterablePattern
 
 class IColorSlide(IterablePattern):
 

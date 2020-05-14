@@ -8,11 +8,11 @@
 import yaml
 import time
 import multiprocessing
-from lightstrip import Lightstrip
+from light_control.lightstrip import Lightstrip
 # from elightstrip import EmulatedLightstrip
-from colors import *
-from onlineconn import OnlineConn
-from iterable_patterns.icolorslide import IColorSlide
+from light_control.colors import *
+from light_control.onlineconn import OnlineConn
+from light_control.iterable_patterns.icolorslide import IColorSlide
 
 def run_lights(settings, read_lock, estrip):
 	cfg = {}
@@ -30,7 +30,7 @@ def run_lights(settings, read_lock, estrip):
 
 	conn = OnlineConn(settings, read_lock)
 
-	slide = IColorSlide(strip, rainbow_cycle(strip.numPixels()))
+	slide = IColorSlide(strip, online(conn))
 
 	try:
 		while True:

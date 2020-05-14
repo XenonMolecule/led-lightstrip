@@ -10,7 +10,7 @@ socketio = SocketIO(app)
 settings = None
 lock = None
 
-@app.route('/time')
+@app.route('/api/time')
 def get_current_time():
     return json.dumps({'time': time.time()})
 
