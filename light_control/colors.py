@@ -6,6 +6,20 @@ def Color(red, green, blue, white = 0):
 	"""
 	return (white << 24) | (green << 16)| (red << 8) | blue
 	
+def getRGB(color):
+	r = 0b11111111 & (color >> 8)
+	g = 0b11111111 & (color >> 16)
+	b = 0b11111111 & color
+	return r, g, b
+
+def calcGradient(color1, color2, progress = 0.5):
+	r1, g1, b1 = getRGB(color1)
+	r2, g2, b2 = getRGB(color2)
+	dr = (r2 - r1)
+	dg = (g2 - g1)
+	db = (b2 - b1)
+	return Color(r1 + int(round(dr * progress)), g1 + int(round(dg * progress)), b1 + int(round(db * progress)))
+	
 def red(n):
 	return Color(255, 0, 0)
 	

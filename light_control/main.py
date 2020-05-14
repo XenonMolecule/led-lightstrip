@@ -13,6 +13,7 @@ from light_control.lightstrip import Lightstrip
 from light_control.colors import *
 from light_control.onlineconn import OnlineConn
 from light_control.iterable_patterns.icolorslide import IColorSlide
+from light_control.patterns.sparkle import Sparkle
 
 def run_lights(settings, read_lock, estrip):
 	cfg = {}
@@ -30,14 +31,12 @@ def run_lights(settings, read_lock, estrip):
 
 	conn = OnlineConn(settings, read_lock)
 
-	islide = IColorSlide(strip, gradient_cycle(255, 0, 0, 0, 0, 255, strip.numPixels()))
+	# unicorn mode
+	sparkle = Sparkle(strip, color(112, 0, 191), color(255, 0, 136), 20, True)
 
 	try:
 		while True:
-			while not islide.isDone():
-				islide.runStep()
-				islide.pause()
-			islide.reset()
+			sparkle.execute()
 	except KeyboardInterrupt:
 		strip.clear()
 
