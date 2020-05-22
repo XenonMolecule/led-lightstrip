@@ -1426,6 +1426,52 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fortawesome/fontawesome-common-types@npm:^0.2.28":
+  version: 0.2.28
+  resolution: "@fortawesome/fontawesome-common-types@npm:0.2.28"
+  checksum: 3/e34fbf3a05a37ecf3e3a6c3d1c03443598c30206e2a429f022dd8a84313b447cb7c0512f40b1f6eabbf981072413c38eb6a6f0d17f8ac8c1788fda35bacdf9b8
+  languageName: node
+  linkType: hard
+
+"@fortawesome/fontawesome-svg-core@npm:^1.2.28":
+  version: 1.2.28
+  resolution: "@fortawesome/fontawesome-svg-core@npm:1.2.28"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": ^0.2.28
+  checksum: 3/a449bb801992f43b4c7c127dffa53785bfa5eed4741966aa7d082dc6257edc24b286bcd5cc47a114efe2c19089756ca46cb23d9f5dc99e528647bf07449cc665
+  languageName: node
+  linkType: hard
+
+"@fortawesome/free-regular-svg-icons@npm:^5.13.0":
+  version: 5.13.0
+  resolution: "@fortawesome/free-regular-svg-icons@npm:5.13.0"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": ^0.2.28
+  checksum: 3/dc8451be3a98da665c0dd409366dfbb06c3cb0c6a8e9cb04673ee198249b2c98d9bdaece06bf34346af9b21cb919822ea10121db02b781f17f369beec38574b0
+  languageName: node
+  linkType: hard
+
+"@fortawesome/free-solid-svg-icons@npm:^5.13.0":
+  version: 5.13.0
+  resolution: "@fortawesome/free-solid-svg-icons@npm:5.13.0"
+  dependencies:
+    "@fortawesome/fontawesome-common-types": ^0.2.28
+  checksum: 3/933e61e9d36485b8ece2ceee9aaefeff4959f8c113cb2ab48bdcc259552fea53973fafdc90cd7c927ff00bbb2953779bb1f0705b61c46839ed47bb89a6032de6
+  languageName: node
+  linkType: hard
+
+"@fortawesome/react-fontawesome@npm:^0.1.9":
+  version: 0.1.9
+  resolution: "@fortawesome/react-fontawesome@npm:0.1.9"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    "@fortawesome/fontawesome-svg-core": ^1.2.20
+    react: 16.x
+  checksum: 3/329cb2f82702663508072b8a077912e8a197f7da2cd4a7acfe71f37fced7a21922b83017b8520d218da371f006bcdef7b9c483ad56b0f2e30c5d3709f8b140e1
+  languageName: node
+  linkType: hard
+
 "@hapi/address@npm:2.x.x":
   version: 2.1.4
   resolution: "@hapi/address@npm:2.1.4"
@@ -2642,12 +2688,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app@workspace:."
   dependencies:
+    "@fortawesome/fontawesome-svg-core": ^1.2.28
+    "@fortawesome/free-regular-svg-icons": ^5.13.0
+    "@fortawesome/free-solid-svg-icons": ^5.13.0
+    "@fortawesome/react-fontawesome": ^0.1.9
     "@testing-library/jest-dom": ^4.2.4
     "@testing-library/react": ^9.3.2
     "@testing-library/user-event": ^7.1.2
     bootstrap: ^4.4.1
     react: ^16.13.1
     react-bootstrap: ^1.0.1
+    react-bootstrap-range-slider: ^0.3.7
     react-color: ^2.18.1
     react-dom: ^16.13.1
     react-scripts: 3.4.1
@@ -11555,6 +11606,20 @@ fsevents@^1.2.7:
     regenerator-runtime: ^0.13.3
     whatwg-fetch: ^3.0.0
   checksum: 3/94d24bf1d69a0cbb26d8adbb14ba600b29c7c5adc06c9f9c8337d0f8ee7358ee2c443d806f8ca96fdf002d7f37c1a5fae6a796f63164df44a4fc3996aeb2d71f
+  languageName: node
+  linkType: hard
+
+"react-bootstrap-range-slider@npm:^0.3.7":
+  version: 0.3.7
+  resolution: "react-bootstrap-range-slider@npm:0.3.7"
+  dependencies:
+    classnames: ^2.2.6
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^16.8.0
+    react-bootstrap: ^1.0.0-beta.16
+    react-dom: ^16.8.0
+  checksum: 3/13a67dcb60516660b269165fdd05cf79a9d0d086f88ebaed693ecfea8e003222ccfe40eecaf55182d277890bd550c8f4f2e920fbfeeb208160df12f6c83ee053
   languageName: node
   linkType: hard
 
