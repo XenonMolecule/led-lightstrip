@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Container from 'react-bootstrap/Container';
 import socketIOClient from 'socket.io-client';
 import { ChromePicker } from 'react-color'
+import MusicPlayer from "./components/MusicPlayer";
 
 const ENDPOINT = "/"
 
@@ -19,15 +20,18 @@ function App() {
   }, []);
 
   return (
-      <Container>
-          <p>The current time is {currentTime}.</p>
-          <ChromePicker disableAlpha={true}
-                  color = {color}
-                  onChange={(color) => {
-              socket.emit('setcolor', {red: color.rgb.r, green: color.rgb.g, blue: color.rgb.b});
-              setColor(color);
-          }}/>
-      </Container>
+      <>
+          <Container>
+              <p>The current time is {currentTime}.</p>
+              <ChromePicker disableAlpha={true}
+                      color = {color}
+                      onChange={(color) => {
+                  socket.emit('setcolor', {red: color.rgb.r, green: color.rgb.g, blue: color.rgb.b});
+                  setColor(color);
+              }}/>
+          </Container>
+          <MusicPlayer/>
+      </>
   );
 }
 
