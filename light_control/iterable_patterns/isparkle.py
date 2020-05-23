@@ -1,9 +1,9 @@
-from iterable_pattern import IterablePattern
+from light_control.iterable_patterns.iterable_pattern import IterablePattern
 from light_control.colors import calcGradient
 import random
 
 class ISparkle(IterablePattern):
-	
+
 	def __init__(self, strip, backgroundColor, sparkleColor, delay = 20, looping = False, iterations=256, sparkleDensity=0.0075, sparkleDuration=64):
 		super(ISparkle, self).__init__(strip, backgroundColor, iterations, delay)
 		self.sparkle = sparkleColor
@@ -28,7 +28,7 @@ class ISparkle(IterablePattern):
 				self.sparkles[n] -= 1
 		self.strip.show()
 		self.incrementStep()
-		
+
 	def reset(self):
 		super(ISparkle, self).reset()
 		if not self.looping:

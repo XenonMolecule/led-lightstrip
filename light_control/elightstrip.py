@@ -1,4 +1,4 @@
-from colors import Color
+from light_control.colors import Color
 from tkinter import *
 
 class EmulatedLightstrip(object):

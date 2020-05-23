@@ -9,4 +9,4 @@ neopixel:
 
 custom:
  reversed: False
- emulator: False
+ emulator: True

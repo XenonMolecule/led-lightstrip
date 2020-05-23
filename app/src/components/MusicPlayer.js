@@ -13,6 +13,7 @@ function MusicPlayer() {
     const [ duration, setDuration ] = useState(60);
     const [ songName, setSongName ] = useState("Loading");
     const [ isPlaying, setIsPlaying ] = useState(false);
+    let startTime = Date.now();
 
     useEffect(() => {
         fetch('/api/songinfo').then(res => res.json()).then(data => {
@@ -20,13 +21,17 @@ function MusicPlayer() {
                 setSongName(data.name);
                 setDuration(Math.round(data.duration / 1000));
                 setIsPlaying(data.playing);
+                startTime = data.calc_timestamp - data.progress;
+                const curr_progress = (Date.now() - data.calc_timestamp) + data.progress;
+                const ceil_progress = Math.ceil(curr_progress / 1000) * 1000;
+                setTimeout(() => {
+                    setProgress(ceil_progress / 1000);
+                }, ceil_progress - curr_progress);
             } else {
                 setSongName("Sign into Spotify");
             }
         });
     }, []);
-    console.log(duration);
-    console.log(isPlaying);
 
     return (
         <>
