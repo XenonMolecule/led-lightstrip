@@ -8,8 +8,8 @@
 import yaml
 import time
 import multiprocessing
-# from light_control.lightstrip import Lightstrip
-from light_control.elightstrip import EmulatedLightstrip
+from light_control.lightstrip import Lightstrip
+# from light_control.elightstrip import EmulatedLightstrip
 from light_control.colors import *
 from light_control.onlineconn import OnlineConn
 from light_control.iterable_patterns.isparkle import ISparkle

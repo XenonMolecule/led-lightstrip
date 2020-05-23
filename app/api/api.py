@@ -70,17 +70,69 @@ def songinfo():
         return json.dumps({'authorized':False})
     timestamp = time.time()
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-    timestamp += ((timestamp - time.time()) // 2)
+    timestamp += ((timestamp - time.time()) / 2)
+    timestamp = round(timestamp * 1000)
     song_data = sp.current_playback()
     return json.dumps({
         'authorized':True,
         'spotify_timestamp': song_data['timestamp'],
-        'calc_timestamp': timestamp,
+        'calc_timestamp': int(timestamp),
         'progress': song_data['progress_ms'],
         'name': song_data['item']['name'],
         'duration': song_data['item']['duration_ms'],
         'playing': song_data['is_playing']
     })
+
+@app.route('/api/pause_playback', methods=['PUT'])
+def pause():
+    session['token_info'], authorized = get_token(session)
+    session.modified = True
+    if not authorized:
+        return json.dumps({'success':False})
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    sp.pause_playback()
+    return json.dumps({'success':True})
+
+@app.route('/api/start_playback', methods=['PUT'])
+def play():
+    session['token_info'], authorized = get_token(session)
+    session.modified = True
+    if not authorized:
+        return json.dumps({'success':False})
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    sp.start_playback()
+    return json.dumps({'success':True})
+
+@app.route('/api/seek_playback', methods=['PUT'])
+def seek():
+    session['token_info'], authorized = get_token(session)
+    session.modified = True
+    if not authorized:
+        return json.dumps({'success':False})
+    progress_ms = request.get_json()['progress']
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    sp.seek_track(progress_ms)
+    return json.dumps({'success':True})
+
+@app.route('/api/previous_track', methods=['PUT'])
+def previous_track():
+    session['token_info'], authorized = get_token(session)
+    session.modified = True
+    if not authorized:
+        return json.dumps({'success':False})
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    sp.previous_track()
+    return json.dumps({'success':True})
+
+@app.route('/api/next_track', methods=['PUT'])
+def next_track():
+    session['token_info'], authorized = get_token(session)
+    session.modified = True
+    if not authorized:
+        return json.dumps({'success':False})
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    sp.next_track()
+    return json.dumps({'success':True})
 
 # Get the spotify token of the user for this session and check if they are authenticated
 def get_token(session):
