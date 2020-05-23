@@ -47,10 +47,7 @@ def auth_callback():
                                             scope = SPOT_SCOPE)
     session.clear()
     code = request.args.get('code')
-    print(code)
     token_info = sp_oauth.get_access_token(code, check_cache=False)
-    
-    print(token_info)
     
     #Save the token info to this specific users session
     session['token_info'] = token_info
@@ -65,6 +62,23 @@ def test_spotify():
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     return json.dumps({'curr_song': sp.current_user_playing_track()})
     
+@app.route('/api/songinfo')
+def songinfo():
+    session['token_info'], authorized = get_token(session)
+    session.modified = True
+    if not authorized:
+        return json.dumps({'authorized':False})
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    song_data = sp.current_playback()
+    return json.dumps({
+        'authorized':True,
+        'timestamp': song_data['timestamp'],
+        'progress': song_data['progress_ms'],
+        'name': song_data['item']['name'],
+        'duration': song_data['item']['duration_ms'],
+        'playing': song_data['is_playing']
+    })
+
 # Get the spotify token of the user for this session and check if they are authenticated
 def get_token(session):
     token_valid = False
