@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import RangeSlider from 'react-bootstrap-range-slider';
 import Nav from "react-bootstrap/Nav";
@@ -9,12 +9,29 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function MusicPlayer() {
 
-    const [ value, setValue ] = useState(0);
+    const [ progress, setProgress ] = useState(0);
+    const [ duration, setDuration ] = useState(60);
+    const [ songName, setSongName ] = useState("Loading");
+    const [ isPlaying, setIsPlaying ] = useState(false);
+
+    useEffect(() => {
+        fetch('/api/songinfo').then(res => res.json()).then(data => {
+            if (data.authorized) {
+                setSongName(data.name);
+                setDuration(Math.round(data.duration / 1000));
+                setIsPlaying(data.playing);
+            } else {
+                setSongName("Sign into Spotify");
+            }
+        });
+    }, []);
+    console.log(duration);
+    console.log(isPlaying);
 
     return (
         <>
             <Navbar fixed={'bottom'} variant={'dark'} bg={'dark'} style={{'flexFlow':'column'}}>
-                <Navbar.Brand style={{'marginRight':'0px'}}>DJ Got Us Fallin' in Love</Navbar.Brand>
+                <Navbar.Brand style={{'marginRight':'0px'}}> {songName} </Navbar.Brand>
                 <Nav style={{'fontSize':'32px'}}>
                     <Nav.Link style={{'padding':'0px', 'marginTop':'-10px', 'marginBottom':'-10px'}}>
                         <FontAwesomeIcon icon={faPauseCircle} />
@@ -26,8 +43,8 @@ function MusicPlayer() {
                         <RangeSlider
                             tooltip={'off'}
                             variant={'primary'}
-                            value={value}
-                            onChange={changeEvent => setValue(changeEvent.target.value)}
+                            value={progress}
+                            onChange={changeEvent => setProgress(changeEvent.target.value)}
                         />
                     </div>
                     <Nav.Link style={{'marginTop':'-2px'}}><FontAwesomeIcon icon={faStepForward} /></Nav.Link>

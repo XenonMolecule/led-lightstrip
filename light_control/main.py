@@ -9,7 +9,7 @@ import yaml
 import time
 import multiprocessing
 from light_control.lightstrip import Lightstrip
-# from elightstrip import EmulatedLightstrip
+# from light_control.elightstrip import EmulatedLightstrip
 from light_control.colors import *
 from light_control.onlineconn import OnlineConn
 from light_control.iterable_patterns.icolorslide import IColorSlide
@@ -33,7 +33,7 @@ def run_lights(settings, read_lock, estrip):
 	conn = OnlineConn(settings, read_lock)
 
 	slide = IColorSlide(strip, online(conn))
-	
+
 	# Birthday Cake Mode (Funfetti)
 	isparkle = ISparkle(strip, color(255, 255, 255), rainbow_cycle(strip.numPixels()), 20, True)
 

@@ -28,7 +28,7 @@ SPOT_SCOPE = 'user-read-playback-state,user-modify-playback-state,user-read-curr
 @app.route('/api/time')
 def get_current_time():
     return json.dumps({'time': time.time()})
-    
+
 @app.route('/api/auth')
 def auth():
     # According to Stack Overflow (famous last words) it is safest to recreate
@@ -48,11 +48,11 @@ def auth_callback():
     session.clear()
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code, check_cache=False)
-    
+
     #Save the token info to this specific users session
     session['token_info'] = token_info
     return redirect('/')
-    
+
 @app.route('/api/test_spotify')
 def test_spotify():
     session['token_info'], authorized = get_token(session)
@@ -61,18 +61,21 @@ def test_spotify():
         return redirect('/api/auth')
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     return json.dumps({'curr_song': sp.current_user_playing_track()})
-    
+
 @app.route('/api/songinfo')
 def songinfo():
     session['token_info'], authorized = get_token(session)
     session.modified = True
     if not authorized:
         return json.dumps({'authorized':False})
+    timestamp = time.time()
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+    timestamp += ((timestamp - time.time()) // 2)
     song_data = sp.current_playback()
     return json.dumps({
         'authorized':True,
-        'timestamp': song_data['timestamp'],
+        'spotify_timestamp': song_data['timestamp'],
+        'calc_timestamp': timestamp,
         'progress': song_data['progress_ms'],
         'name': song_data['item']['name'],
         'duration': song_data['item']['duration_ms'],
@@ -83,15 +86,15 @@ def songinfo():
 def get_token(session):
     token_valid = False
     token_info = session.get('token_info', {})
-    
+
     #If the session does not have a token then break out as unauthenticated
     if not (session.get('token_info', False)):
         return token_info, token_valid
-    
+
     #Check if the token has expired
     now = int(time.time())
     is_token_expired = token_info.get('expires_at') - now < 60
-    
+
     #Refresh token if it has expired
     if (is_token_expired):
         sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id = SPOT_CLI_ID, \
@@ -99,7 +102,7 @@ def get_token(session):
                                             redirect_uri = SPOT_REDIRECT_URI, \
                                             scope = SPOT_SCOPE)
         token_info = sp_oauth.refresh_access_token(token_info.get('refresh_token'))
-    
+
     token_valid = True
     return token_info, token_valid
 
@@ -115,7 +118,7 @@ def connect():
     print("New Connection")
     #test_col = mongo.db["testcol"]
     #print(test_col.find_one())
-    
+
 @socketio.on('disconnect')
 def disconnect():
     print("Client disconnected")
