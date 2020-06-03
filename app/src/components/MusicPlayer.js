@@ -26,6 +26,28 @@ function MusicPlayer() {
     const [ startTime, setStartTime ] = useState(Date.now())
     const [ updateSong, setUpdateSong ] = useState(true);
 
+    function seekPlayback() {
+        fetch('/api/seek_playback', {
+            method:"PUT", 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "progress": visProgress * 1000,
+            })}).then(res => res.json()).then(data => {
+                setTimeout(() => {
+                    setBindProgress(true);
+                }, 1000);
+                setUpdateSong(true);
+            }
+        );
+    }
+
+    function forceUpdate() {
+        console.log("FOCUS");
+        setUpdateSong(true);
+    }
+
     useEffect(() => {
         if (updateSong) {
             fetch('/api/songinfo').then(res => res.json()).then(data => {
@@ -52,7 +74,7 @@ function MusicPlayer() {
         if(isPlaying) {
             const offset = Date.now() - startTime;
             let inc_progress = setTimeout(() => {
-                if (progress === duration) {
+                if (progress >= duration) {
                     setUpdateSong(true);
                 }
                 setProgress(progress + 1);
@@ -67,6 +89,10 @@ function MusicPlayer() {
         }
     }, [progress, bindProgress]);
 
+    useEffect(() => {
+        window.addEventListener('focus', forceUpdate);
+        return () => window.removeEventListener('focus', forceUpdate);
+    }, []);
 
     return (
         <>
@@ -91,21 +117,8 @@ function MusicPlayer() {
                         setUpdateSong(true);
                     }}/></Nav.Link>
                     <div style={{'width':'80vw'}}
-                            onMouseUp={() => {
-                                fetch('/api/seek_playback', {
-                                    method:"PUT", 
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify({
-                                        "progress": visProgress * 1000,
-                                    })}).then(res => res.json()).then(data => {
-                                        setTimeout(() => {
-                                            setBindProgress(true);
-                                        }, 1000);
-                                        setUpdateSong(true);
-                                    });
-                            }}>
+                            onMouseUp={seekPlayback}
+                            onTouchEnd={seekPlayback}>
                         <RangeSlider
                             tooltip={'off'}
                             variant={'primary'}
