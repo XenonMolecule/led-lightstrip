@@ -23,8 +23,9 @@ function MusicPlayer() {
     const [ duration, setDuration ] = useState(60);
     const [ songName, setSongName ] = useState("Loading");
     const [ isPlaying, setIsPlaying ] = useState(false);
-    const [ startTime, setStartTime ] = useState(Date.now())
+    const [ startTime, setStartTime ] = useState(Date.now());
     const [ updateSong, setUpdateSong ] = useState(true);
+    const [ checkTime, setCheckTime ] = useState(Date.now());
 
     function seekPlayback() {
         fetch('/api/seek_playback', {
@@ -44,7 +45,6 @@ function MusicPlayer() {
     }
 
     function forceUpdate() {
-        console.log("FOCUS");
         setUpdateSong(true);
     }
 
@@ -91,7 +91,16 @@ function MusicPlayer() {
 
     useEffect(() => {
         window.addEventListener('focus', forceUpdate);
-        return () => window.removeEventListener('focus', forceUpdate);
+        let check_sync = setInterval(() => {
+            if (Date.now() - checkTime > 2000) {
+                forceUpdate();
+            }
+            checkTime = Date.now();
+        }, 1000);
+        return () => {
+            window.removeEventListener('focus', forceUpdate);
+            clearInterval(check_sync);
+        }
     }, []);
 
     return (
