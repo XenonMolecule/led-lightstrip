@@ -29,7 +29,7 @@ function MusicPlayer() {
 
     function seekPlayback() {
         fetch('/api/seek_playback', {
-            method:"PUT", 
+            method:"PUT",
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -95,7 +95,7 @@ function MusicPlayer() {
             if (Date.now() - checkTime > 2000) {
                 forceUpdate();
             }
-            checkTime = Date.now();
+            setCheckTime(Date.now())
         }, 1000);
         return () => {
             window.removeEventListener('focus', forceUpdate);
