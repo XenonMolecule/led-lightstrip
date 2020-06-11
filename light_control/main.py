@@ -14,6 +14,8 @@ from light_control.colors import *
 from light_control.onlineconn import OnlineConn
 from light_control.iterable_patterns.isparkle import ISparkle
 from light_control.iterable_patterns.icolorslide import IColorSlide
+from light_control.iterable_patterns.ipulse import IPulse
+import time
 
 def run_lights(settings, read_lock, estrip):
 	cfg = {}
@@ -35,13 +37,16 @@ def run_lights(settings, read_lock, estrip):
 
 	# Birthday Cake Mode (Funfetti)
 	# isparkle = ISparkle(strip, color(255, 255, 255), rainbow_cycle(strip.numPixels()), 20, True)
+	
+	ipulse = IPulse(strip, gradient(0, 0, 0, 255, 0, 0), 200)
 
 	try:
 		while True:
-			while not slide.isDone():
-				slide.runStep()
-				slide.pause()
-			slide.reset()
+			while not ipulse.isDone():
+				ipulse.runStep()
+				ipulse.pause()
+			ipulse.reset()
+			time.sleep(1)
 	except KeyboardInterrupt:
 		strip.clear()
 
