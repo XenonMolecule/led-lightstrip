@@ -14,5 +14,3 @@ function ColorSlider(props) {
 }
 
 export default ColorSlider;
-
-

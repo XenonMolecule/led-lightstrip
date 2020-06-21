@@ -6,6 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import PulseButton from "./PulseButton";
+import AlphaSlider from "./AlphaSlider";
 
 const ENDPOINT = "/"
 
@@ -20,11 +21,18 @@ function hexToRgb(hex) {
 
 function LightDJ() {
     const [color, setColor] = useState("#000000");
+    const [alphaColor, setAlphaColor] = useState("rgba(0,0,0,1.0)");
+    const [alpha, setAlpha] = useState(1.0);
     const [socket, setSocket] = useState(null);
 
     function updateColor(hex, rgb) {
-        socket.emit('setcolor', {red: rgb.r, green: rgb.g, blue: rgb.b});
+        socket.emit('set_background_color', {
+            red: Math.floor(rgb.r * alpha),
+            green: Math.floor(rgb.g * alpha),
+            blue: Math.floor(rgb.b * alpha)
+        });
         setColor(hex);
+        setAlphaColor("rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + alpha + ")");
     }
 
     useEffect(() => {
@@ -33,6 +41,7 @@ function LightDJ() {
 
     const colorsRow1 = ["#ff0000", "#ff7f00", "#ffff00", "#00ff00"];
     const colorsRow2 = ["#00ffff", "#0000ff", "#7f00ff", "#ff00ff"];
+    const colorsRow3 = ["#000000", "#ffffff"];
 
     function buildRowFromColors(colors) {
         let row = [];
@@ -53,6 +62,7 @@ function LightDJ() {
 
     const buttonsRow1 = buildRowFromColors(colorsRow1);
     const buttonsRow2 = buildRowFromColors(colorsRow2);
+    const buttonsRow3 = buildRowFromColors(colorsRow3);
 
     return (
         <>
@@ -66,6 +76,16 @@ function LightDJ() {
                 </Row>
                 <Row style={{"marginTop":'10px'}}>
                     {buttonsRow2}
+                </Row>
+                <Row style={{"marginTop":'10px'}}>
+                    {buttonsRow3}
+                    <Col xs={6}>
+                        <AlphaSlider color={alphaColor}
+                            onChange = {(newColor) => {
+                                setAlpha(newColor.rgb.a);
+                                updateColor(newColor.hex, newColor.rgb);
+                            }}/>
+                    </Col>
                 </Row>
                 <Row style={{"marginTop":'10px'}}>
                     <PulseButton/>
