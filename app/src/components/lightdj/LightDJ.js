@@ -5,6 +5,7 @@ import ColorButton from "./ColorButton";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import PulseButton from "./PulseButton";
 
 const ENDPOINT = "/"
 
@@ -66,9 +67,10 @@ function LightDJ() {
                 <Row style={{"marginTop":'10px'}}>
                     {buttonsRow2}
                 </Row>
+                <Row style={{"marginTop":'10px'}}>
+                    <PulseButton/>
+                </Row>
             </Container>
-
-
         </>
     )
 }
