@@ -4,7 +4,7 @@ from app.api.api import run_server
 
 from multiprocessing import Process
 from multiprocessing.sharedctypes import Value, Array
-from ctypes import Structure, c_int
+from ctypes import Structure, c_int, c_wchar, c_bool
 
 # TODO: stop being lazy and just read the config file here too
 EMULATOR = False
@@ -26,13 +26,18 @@ def hex_from_int(color):
 
 class Settings(Structure):
 	_fields_ = [
-		('red', c_int),
-		('green', c_int),
-		('blue', c_int)
+		('back_red', c_int),
+		('back_green', c_int),
+		('back_blue', c_int),
+		('fore_red', c_int),
+		('fore_green', c_int),
+		('fore_blue', c_int),
+		('queue_patt', c_wchar * 10), # Can't be longer than 10 characters
+		('hold_patt', c_bool)
 	]
 
 if __name__ == "__main__":
-	settings = Value(Settings, 0, 0, 0)
+	settings = Value(Settings, 0, 0, 0, 0, 0, 0, 'base', False)
 	read_lock = multiprocessing.Lock()
 
 	emulator_colors = None

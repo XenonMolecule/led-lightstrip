@@ -12,10 +12,9 @@ from light_control.lightstrip import Lightstrip
 # from light_control.elightstrip import EmulatedLightstrip
 from light_control.colors import *
 from light_control.onlineconn import OnlineConn
-from light_control.iterable_patterns.isparkle import ISparkle
 from light_control.iterable_patterns.icolorslide import IColorSlide
-from light_control.iterable_patterns.ipulse import IPulse
-import time
+from light_control.iterable_patterns.ipulsegradient import IPulseGradient
+from light_control.controllers.onlinecontroller import OnlineController
 
 def run_lights(settings, read_lock, estrip):
 	cfg = {}
@@ -33,26 +32,25 @@ def run_lights(settings, read_lock, estrip):
 
 	conn = OnlineConn(settings, read_lock)
 
-	slide = IColorSlide(strip, online(conn))
+	online_slide = IColorSlide(strip, online_background(conn))
 
 	# Birthday Cake Mode (Funfetti)
 	# isparkle = ISparkle(strip, color(255, 255, 255), rainbow_cycle(strip.numPixels()), 20, True)
 	
-	ipulse = IPulse(strip, gradient(0, 0, 0, 255, 0, 0), 200)
+	online_pulse = IPulseGradient(strip, online_background(conn), online_foreground(conn), 200)
+	controller_map = {}
+	controller_map['pulse'] = online_pulse
+
+	controller = OnlineController(online_slide, controller_map, conn)
 
 	try:
-		while True:
-			while not ipulse.isDone():
-				ipulse.runStep()
-				ipulse.pause()
-			ipulse.reset()
-			time.sleep(1)
+		controller.run_locking()
 	except KeyboardInterrupt:
 		strip.clear()
 
 if __name__ == '__main__':
 	settings = multiprocessing.Manager().Namespace()
-	settings.red = 0
-	settings.green = 0
-	settings.blue = 255
+	settings.back_red = 0
+	settings.back_green = 0
+	settings.back_blue = 255
 	run_lights(settings, multiprocessing.Lock(), None)

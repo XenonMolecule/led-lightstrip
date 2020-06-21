@@ -158,12 +158,26 @@ def get_token(session):
     token_valid = True
     return token_info, token_valid
 
+@app.route('/api/change_pattern', methods=['POST'])
+def change_pattern():
+    req = request.get_json()
+    pattern = str(req['pattern'])
+    if len(pattern) > 10:
+        pattern = pattern[:10]
+    with lock:
+        settings.queue_patt = pattern
+        settings.hold_patt = req['hold'] == "True"
+    return json.dumps({'success': 'success'})
+
 @socketio.on('setcolor')
 def set_color(message):
     with lock:
-        settings.red = int(message['red'])
-        settings.green = int(message['green'])
-        settings.blue = int(message['blue'])
+        settings.back_red = int(message['red']) // 2
+        settings.back_green = int(message['green']) // 2
+        settings.back_blue = int(message['blue']) // 2
+        settings.fore_red = int(message['red'])
+        settings.fore_green = int(message['green'])
+        settings.fore_blue = int(message['blue'])
 
 @socketio.on('connect')
 def connect():
