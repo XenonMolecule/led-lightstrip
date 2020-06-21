@@ -166,15 +166,15 @@ def change_pattern():
         pattern = pattern[:10]
     with lock:
         settings.queue_patt = pattern
-        settings.hold_patt = req['hold'] == "True"
+        settings.hold_patt = req['hold'] == "True" or req['hold'] == "true"
     return json.dumps({'success': 'success'})
 
 @socketio.on('setcolor')
 def set_color(message):
     with lock:
-        settings.back_red = int(message['red']) // 2
-        settings.back_green = int(message['green']) // 2
-        settings.back_blue = int(message['blue']) // 2
+        settings.back_red = int(message['red']) // 4
+        settings.back_green = int(message['green']) // 4
+        settings.back_blue = int(message['blue']) // 4
         settings.fore_red = int(message['red'])
         settings.fore_green = int(message['green'])
         settings.fore_blue = int(message['blue'])
