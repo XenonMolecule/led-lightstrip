@@ -169,12 +169,16 @@ def change_pattern():
         settings.hold_patt = req['hold'] == "True" or req['hold'] == "true"
     return json.dumps({'success': 'success'})
 
-@socketio.on('setcolor')
-def set_color(message):
+@socketio.on('set_background_color')
+def set_background_color(message):
     with lock:
-        settings.back_red = int(message['red']) // 4
-        settings.back_green = int(message['green']) // 4
-        settings.back_blue = int(message['blue']) // 4
+        settings.back_red = int(message['red'])
+        settings.back_green = int(message['green'])
+        settings.back_blue = int(message['blue'])
+        
+@socketio.on('set_foreground_color')
+def set_foreground_color(message):
+    with lock:
         settings.fore_red = int(message['red'])
         settings.fore_green = int(message['green'])
         settings.fore_blue = int(message['blue'])
