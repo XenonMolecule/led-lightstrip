@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import ColorSlider from "./ColorSlider";
 import ColorButton from "./ColorButton";
 import Container from 'react-bootstrap/Container';
@@ -16,18 +16,18 @@ function hexToRgb(hex) {
 }
 
 function ColorSelector(props) {
-    const [color, setColor] = useState("#000000");
-    const [alphaColor, setAlphaColor] = useState("rgba(0,0,0,1.0)");
     const [alpha, setAlpha] = useState(1.0);
 
-    function updateColor(hex, rgb) {
-        props.updateColor({
-            red: Math.floor(rgb.r * alpha),
-            green: Math.floor(rgb.g * alpha),
-            blue: Math.floor(rgb.b * alpha)
-        })
-        setColor(hex);
-        setAlphaColor("rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + alpha + ")");
+    useEffect(() => {
+        props.emitColor({
+            red: Math.floor(props.color.r * alpha),
+            green: Math.floor(props.color.g * alpha),
+            blue: Math.floor(props.color.b * alpha)
+        });
+    },[props.color])
+
+    function rgbToRgba(rgb) {
+        return "rgba(" + rgb.r + "," + rgb.g + "," + rgb.b + "," + alpha + ")";
     }
 
     const colorsRow1 = ["#ff0000", "#ff7f00", "#ffff00", "#00ff00"];
@@ -42,7 +42,7 @@ function ColorSelector(props) {
                     <ColorButton
                         color={color}
                         onClick = {(newColor) => {
-                            updateColor(newColor, hexToRgb(newColor));
+                            props.setColor(hexToRgb(newColor));
                         }}
                     />
                 </Col>
@@ -57,9 +57,9 @@ function ColorSelector(props) {
 
     return (
         <>
-            <ColorSlider color={color}
+            <ColorSlider color={rgbToRgba(props.color)}
                 onChange={(newColor) => {
-                    updateColor(newColor.hex, newColor.rgb);
+                    props.setColor(newColor.rgb);
                 }}/>
             <Container>
                 <Row style={{"marginTop":'10px'}}>
@@ -71,10 +71,10 @@ function ColorSelector(props) {
                 <Row style={{"marginTop":'10px'}}>
                     {buttonsRow3}
                     <Col xs={6}>
-                        <AlphaSlider color={alphaColor}
+                        <AlphaSlider color={rgbToRgba(props.color)}
                             onChange = {(newColor) => {
                                 setAlpha(newColor.rgb.a);
-                                updateColor(newColor.hex, newColor.rgb);
+                                props.setColor(newColor.rgb);
                             }}/>
                     </Col>
                 </Row>
